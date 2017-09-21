@@ -10,8 +10,9 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    //Place your instance variables here
-    
+    let allQuestions = QuestionBank()
+    var pickedAnswer: Bool = false
+    var questionNumber: Int = 0
     
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
@@ -21,11 +22,28 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set first question from allQuestions array
+        let firstQuestion = allQuestions.list[questionNumber]
+        // Set Label to first question's text
+        questionLabel.text = firstQuestion.questionText
+        
     }
 
 
     @IBAction func answerPressed(_ sender: AnyObject) {
-  
+        
+        // Set picked answer based on button that was pressed
+        if sender.tag == 1 {
+            pickedAnswer = true
+        } else if sender.tag == 2 {
+            pickedAnswer = false
+        }
+        
+        checkAnswer()
+        
+        questionNumber += 1
+        
+        nextQuestion()
     }
     
     
@@ -35,11 +53,25 @@ class ViewController: UIViewController {
     
 
     func nextQuestion() {
-        
+        if questionNumber <= allQuestions.list.count - 1 {
+            questionLabel.text = allQuestions.list[questionNumber].questionText
+        } else {
+            print("End of the quiz")
+            questionNumber = 0
+        }
     }
     
     
     func checkAnswer() {
+        
+        // Fetch answer from Question Bank
+        let correctAnswer = allQuestions.list[questionNumber].answer
+        // Compare answer with users pickedAnswer
+        if correctAnswer == pickedAnswer {
+            print("You got it!")
+        } else {
+            print("Wrong!")
+        }
         
     }
     
