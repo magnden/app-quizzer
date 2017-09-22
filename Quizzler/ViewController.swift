@@ -62,7 +62,7 @@ class ViewController: UIViewController {
             
         } else {
             
-            let alert = UIAlertController(title: "Great", message: "All questions answered, do you want to start over?", preferredStyle: .alert)
+            let alert = UIAlertController(title: createTitleForAlert(), message: "You scored a \(score) / \(allQuestions.list.count) Do you want to start over?", preferredStyle: .alert)
             
             let restartAction = UIAlertAction(title: "Restart", style: .default, handler: { (UIAlertAction) in
                 self.startOver()
@@ -92,6 +92,27 @@ class ViewController: UIViewController {
         questionNumber = 0
         score = 0
         nextQuestion()
+    }
+    
+    func createTitleForAlert() -> String{
+        let title: String
+        // Check if user got more than 80% correct
+        if score >= Int(round(0.8 * CGFloat(allQuestions.list.count))) {
+            title = "You did Great!"
+        }
+        // Check if user got more than 60% correct
+        else if score >= Int(round(0.6 * CGFloat(allQuestions.list.count))) {
+            title = "You did Good!"
+        }
+        // Check if user got more than 40% correct
+        else if score >= Int(round(0.4 * CGFloat(allQuestions.list.count))){
+            title = "You did OK"
+        }
+        // Less than 40% correct
+        else {
+            title = "You didn't do so well"
+        }
+        return title
     }
     
 
