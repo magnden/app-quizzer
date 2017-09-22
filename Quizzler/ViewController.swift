@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     let allQuestions = QuestionBank()
     var pickedAnswer: Bool = false
     var questionNumber: Int = 0
+    var score: Int = 0
     
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
@@ -22,11 +23,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set first question from allQuestions array
-        let firstQuestion = allQuestions.list[questionNumber]
-        // Set Label to first question's text
-        questionLabel.text = firstQuestion.questionText
-        
+        nextQuestion()
     }
 
 
@@ -48,13 +45,21 @@ class ViewController: UIViewController {
     
     
     func updateUI() {
-      
+        
+        scoreLabel.text = "Score: \(score)"
+        progressLabel.text = "\(questionNumber + 1) / \(allQuestions.list.count)"
+        
+        progressBar.frame.size.width = (view.frame.size.width / 13) * CGFloat(questionNumber + 1)
+        
     }
     
 
     func nextQuestion() {
         if questionNumber <= allQuestions.list.count - 1 {
             questionLabel.text = allQuestions.list[questionNumber].questionText
+            
+            updateUI()
+            
         } else {
             
             let alert = UIAlertController(title: "Great", message: "All questions answered, do you want to start over?", preferredStyle: .alert)
@@ -72,11 +77,10 @@ class ViewController: UIViewController {
     
     func checkAnswer() {
         
-        // Fetch answer from Question Bank
         let correctAnswer = allQuestions.list[questionNumber].answer
-        // Compare answer with users pickedAnswer
         if correctAnswer == pickedAnswer {
             print("You got it!")
+            score += 1
         } else {
             print("Wrong!")
         }
@@ -86,6 +90,7 @@ class ViewController: UIViewController {
     
     func startOver() {
         questionNumber = 0
+        score = 0
         nextQuestion()
     }
     
