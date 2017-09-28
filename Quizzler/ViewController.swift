@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class ViewController: UIViewController {
     
@@ -48,8 +49,10 @@ class ViewController: UIViewController {
         
         scoreLabel.text = "Score: \(score)"
         progressLabel.text = "\(questionNumber + 1) / \(allQuestions.list.count)"
+        UIView.animate(withDuration: 0.3) {
+            self.progressBar.frame.size.width = (self.view.frame.size.width / 13) * CGFloat(self.questionNumber + 1)
+        }
         
-        progressBar.frame.size.width = (view.frame.size.width / 13) * CGFloat(questionNumber + 1)
         
     }
     
@@ -80,9 +83,13 @@ class ViewController: UIViewController {
         let correctAnswer = allQuestions.list[questionNumber].answer
         if correctAnswer == pickedAnswer {
             print("You got it!")
+            SVProgressHUD.showSuccess(withStatus: "Correct!")
+            SVProgressHUD.dismiss(withDelay: 1.0)
             score += 1
         } else {
             print("Wrong!")
+            SVProgressHUD.showSuccess(withStatus: "Wrong!")
+            SVProgressHUD.dismiss(withDelay: 0.3)
         }
         
     }
